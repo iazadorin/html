@@ -85,8 +85,25 @@
 				this.y = Math.floor(this.r + Math.random() * (can.height-2*this.r));
 			}
 		}
+		var monster = {
+			x:50,
+			y:60,
+			r:25,
+			color:'red',
+			draw: function(){
+				c.beginPath();
+				c.arc(this.x, this.y, this.r, Math.PI, 0);
+				c.lineTo(this.x + this.r, this.y + this.r);
+				c.lineTo(this.x - this.r, this.y + this.r);
+				c.closePath();
+				c.fillStyle = this.color;
+				c.fill();
+				c.stroke();
+			}
+		}
 		function draw() {
 			c.clearRect(0,0, can.width, can.height);
+			monster.draw();
 			dot.draw();
 			packMan.draw();
 			if (packMan.y + packMan.vy > can.height || packMan.y + packMan.vy < 0) {

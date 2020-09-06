@@ -15,6 +15,7 @@
 	</canvas>
 	<pre id="p" style="font-size:25px"></pre>
 	<script>
+		var gameOver = false;
 		var sco = 0;
 		var e = document.getElementById('p');
 		var can = document.getElementById('can');
@@ -118,10 +119,26 @@
 				dot.move();
 				score();
 			}
+			fail();
 			window.requestAnimationFrame(draw);
+		}
+		function fail(){
+			if (Math.abs(packMan.x - monster.x) < packMan.radius + monster.r && Math.abs(packMan.y - monster.y) < packMan.radius + monster.r){
+				if (gameOver==true){
+					return;
+				}
+				e.textContent += "\n"
+				e.textContent += "Вы проиграли!"
+				gameOver = true;
+				packMan.vx = 0;
+				packMan.vy = 0;
+			}
 		}
 		function keyDown(event){
 			const keyName = event.key;
+			if (gameOver==true){
+				return;
+			}
 			if(keyName==="ArrowUp"){
 				packMan.vy=-2;
 				packMan.vx=0;
@@ -150,7 +167,8 @@
 		}
 		document.addEventListener('keydown', keyDown, false);
 		dot.move();
-		draw()
+		draw();
+		
 	</script>
 
 </body>

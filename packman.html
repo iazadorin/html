@@ -26,6 +26,7 @@
 			y: 100,
 			vx: 0,
 			vy: 0,
+			v:4,
 			radius: 25,
 			color: 'Moccasin',
 			draw: function() {
@@ -90,6 +91,7 @@
 			x:50,
 			y:60,
 			r:25,
+			v:1,
 			color:'red',
 			draw: function(){
 				c.beginPath();
@@ -106,7 +108,7 @@
 				this.y = Math.floor(this.r + Math.random() * (can.height-2*this.r));
 			}
 		}
-		function draw() {
+		function loop() {
 			c.clearRect(0,0, can.width, can.height);
 			monster.draw();
 			dot.draw();
@@ -123,8 +125,9 @@
 				dot.move();
 				score();
 			}
+			chase();
 			fail();
-			window.requestAnimationFrame(draw);
+			window.requestAnimationFrame(loop);
 		}
 		function fail(){
 			if (Math.abs(packMan.x - monster.x) < packMan.radius + monster.r && Math.abs(packMan.y - monster.y) < packMan.radius + monster.r){
@@ -144,19 +147,19 @@
 				return;
 			}
 			if(keyName==="ArrowUp"){
-				packMan.vy=-2;
+				packMan.vy=-packMan.v;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowDown"){
-				packMan.vy=2;
+				packMan.vy=packMan.v;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowRight"){
-				packMan.vx=2;
+				packMan.vx=packMan.v;
 				packMan.vy=0;
 			}
 			if(keyName==="ArrowLeft"){
-				packMan.vx=-2;
+				packMan.vx=-packMan.v;
 				packMan.vy=0;
 			}
 			if(keyName===" "){
@@ -165,14 +168,28 @@
 				
 			}
 		}
+		function chase(){
+			if(monster.x > packMan.x){
+				monster.x -=monster.v
+			}
+			if(monster.y > packMan.y){
+				monster.y -=monster.v
+			}
+			if(monster.x < packMan.x){
+				monster.x +=monster.v
+			}
+			if(monster.y < packMan.y){
+				monster.y +=monster.v
+			}
+		}
 		function score(){
 			e.textContent = "Cчёт: " + sco;
 			sco++;
 		}
 		document.addEventListener('keydown', keyDown, false);
 		dot.move();
-		monster.move();		
-		draw();
+		monster.move();	
+		loop();
 	</script>
 
 </body>

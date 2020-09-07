@@ -104,8 +104,8 @@
 				c.stroke();
 			},
 			move: function(){
-				this.x = Math.floor(this.r + Math.random() * (can.width-2*this.r));
-				this.y = Math.floor(this.r + Math.random() * (can.height-2*this.r));
+				this.x = Math.floor(can.width/2 + Math.random() * can.width/2);
+				this.y = Math.floor(can.height/2 + Math.random() * can.height/2);
 			}
 		}
 		function loop() {

@@ -185,6 +185,12 @@
 		function score(){
 			e.textContent = "Cчёт: " + sco;
 			sco++;
+			if(sco >= 15){
+				monster.v = 1.25;
+			}
+			if(sco >= 30){
+				monster.v = 1.5;
+			}
 		}
 		document.addEventListener('keydown', keyDown, false);
 		dot.move();

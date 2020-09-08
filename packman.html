@@ -11,7 +11,7 @@
 	</style>
 </head>
 <body onload="score()">
-	<canvas id ='can' width=400 height=400>
+	<canvas id ='can' width=400 height=400 style='background-color:black'>
 	</canvas>
 	<pre id="p" style="font-size:25px"></pre>
 	<script>
@@ -81,7 +81,7 @@
 				c.fillStyle = this.color;
 				c.fill();
 				c.stroke();
-			},
+				},
 			move: function(){
 				this.x = Math.floor(this.r + Math.random() * (can.width-2*this.r));
 				this.y = Math.floor(this.r + Math.random() * (can.height-2*this.r));
@@ -110,6 +110,7 @@
 		}
 		function loop() {
 			c.clearRect(0,0, can.width, can.height);
+			background();
 			monster.draw();
 			dot.draw();
 			packMan.draw();
@@ -190,6 +191,21 @@
 			}
 			if(sco >= 30){
 				monster.v = 1.5;
+			}
+		}
+		function background(){
+			var step = 20;
+			var r = 1.5;
+			
+			for(var y = step; y < can.height; y += step){
+				for(var x = step; x < can.width; x += step){
+					c.beginPath();
+					c.arc(x, y, r, 0, 2*Math.PI);
+					c.closePath();
+					c.fillStyle = '#696969';
+					c.fill();
+					c.stroke();
+				}
 			}
 		}
 		document.addEventListener('keydown', keyDown, false);

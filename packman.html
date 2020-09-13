@@ -55,11 +55,15 @@
 				else{
 					a=15;
 				}
+				var gradient = c.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
+				gradient.addColorStop(0, '#FEE068');
+				gradient.addColorStop(1, '#9F8D43');
+				c.fillStyle = gradient;
+				c.strokeStyle = '#9F8D43';
 				c.beginPath();
 				c.arc(this.x, this.y, this.radius, Math.PI * a/180, Math.PI * (360-a)/180);
 				c.lineTo(this.x, this.y);
 				c.closePath();
-				c.fillStyle = this.color;
 				c.fill();
 				c.stroke();
 				if(this.vx!=0 || this.vy!=0){
@@ -114,9 +118,13 @@
 					else{
 						a=0.5;
 					}
+				var gradient = c.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+				gradient.addColorStop(0, '#0EC400');
+				gradient.addColorStop(1, '#075E00');
+				c.fillStyle = gradient;
+				c.strokeStyle = '#075E00';
 				c.beginPath();
 				c.arc(this.x, this.y, this.r + a, 0, 2*Math.PI);
-				c.fillStyle = this.color;
 				c.fill();
 				c.stroke();
 				this.n++;
@@ -147,6 +155,11 @@
 					a= 20 - Math.floor(this.n/10);
 					s= this.r - (this.n-100)/100*this.r
 				}
+				var gradient = c.createLinearGradient(this.x-this.r,0, this.x+this.r,0);
+				gradient.addColorStop(0, this.color);
+				gradient.addColorStop(1, '#7f0000');
+				c.fillStyle = gradient;
+				c.strokeStyle = '#7f0000';
 				c.beginPath();
 				c.arc(this.x, this.y, this.r, Math.PI, 0);
 				c.lineTo(this.x + this.r, this.y + this.r);
@@ -155,12 +168,11 @@
 					this.x + 0.25*this.r, this.y + 1.5*this.r - s, 
 					this.x - this.r, this.y + this.r);
 				c.closePath();
-				c.fillStyle = this.color;
 				c.fill();
 				c.stroke();
+				c.fillStyle = 'navy';
 				c.beginPath();
 				c.ellipse(this.x, this.y, 15, a, 0, 0, 2*Math.PI);
-				c.fillStyle = 'navy';
 				c.fill();
 				c.stroke();
 				this.n++;
@@ -268,13 +280,13 @@
 		function background(){
 			var step = 20;
 			var r = 1.5;
-			
+			c.fillStyle = '#696969';
+			c.strokeStyle = '#6E6E6E';
 			for(var y = step; y < can.height; y += step){
 				for(var x = step; x < can.width; x += step){
 					c.beginPath();
 					c.arc(x, y, r, 0, 2*Math.PI);
 					c.closePath();
-					c.fillStyle = '#696969';
 					c.fill();
 					c.stroke();
 				}

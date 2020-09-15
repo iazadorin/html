@@ -27,12 +27,13 @@
 			vx: 0,
 			vy: 0,
 			v:4,
+			dir: 0,
 			radius: 25,
 			color: 'Moccasin',
 			draw: function() {
 				var a = 30;
 				if(this.n<10){
-					a=0;
+					a=1;
 				}
 				else if(this.n<20){
 					a=15;
@@ -55,13 +56,30 @@
 				else{
 					a=15;
 				}
+				var ea, sa;
+				if(this.dir==0){
+					sa = a;
+					ea = 360 - a;
+				}
+				if(this.dir==1){	
+					sa = a+270;
+					ea = 270 - a;
+				}
+				if(this.dir==2){	
+					sa = 180 + a;
+					ea = 180 - a;
+				}
+				if(this.dir==3){
+					sa = 90 + a;
+					ea = 90 - a;
+				}
 				var gradient = c.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
 				gradient.addColorStop(0, '#FEE068');
 				gradient.addColorStop(1, '#9F8D43');
 				c.fillStyle = gradient;
 				c.strokeStyle = '#9F8D43';
 				c.beginPath();
-				c.arc(this.x, this.y, this.radius, Math.PI * a/180, Math.PI * (360-a)/180);
+				c.arc(this.x, this.y, this.radius, Math.PI * sa/180, Math.PI * ea/180);
 				c.lineTo(this.x, this.y);
 				c.closePath();
 				c.fill();
@@ -226,18 +244,22 @@
 				return;
 			}
 			if(keyName==="ArrowUp"){
+				packMan.dir = 1;
 				packMan.vy=-packMan.v;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowDown"){
+				packMan.dir = 3;
 				packMan.vy=packMan.v;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowRight"){
+				packMan.dir = 0;
 				packMan.vx=packMan.v;
 				packMan.vy=0;
 			}
 			if(keyName==="ArrowLeft"){
+				packMan.dir = 2;
 				packMan.vx=-packMan.v;
 				packMan.vy=0;
 			}

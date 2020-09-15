@@ -57,21 +57,23 @@
 					a=15;
 				}
 				var ea, sa;
-				if(this.dir==0){
-					sa = a;
-					ea = 360 - a;
-				}
-				if(this.dir==1){	
-					sa = a+270;
-					ea = 270 - a;
-				}
-				if(this.dir==2){	
-					sa = 180 + a;
-					ea = 180 - a;
-				}
-				if(this.dir==3){
-					sa = 90 + a;
-					ea = 90 - a;
+				switch (this.dir){
+					case 0:
+						sa = a;
+						ea = 360 - a;
+						break;
+					case 1:
+						sa = a+270;
+						ea = 270 - a;
+						break;
+					case 2:
+						sa = 180 + a;
+						ea = 180 - a;
+						break;
+					default:
+						sa = 90 + a;
+						ea = 90 - a;
+						break;
 				}
 				var gradient = c.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
 				gradient.addColorStop(0, '#FEE068');

@@ -11,15 +11,15 @@
 	</style>
 </head>
 <body onload="score()">
-	<canvas id ='can' width=400 height=400 style='background-color:black'>
+	<canvas id ='canvasElement' width=400 height=400 style='background-color:black'>
 	</canvas>
 	<pre id="p" style="font-size:25px"></pre>
 	<script>
 		var gameOver = false;
-		var sco = 0;
-		var e = document.getElementById('p');
-		var can = document.getElementById('can');
-		var c = can.getContext('2d');
+		var gameScore = 0;
+		var textElement = document.getElementById('p');
+		var canvasElement = document.getElementById('canvasElement');
+		var canvasContext = canvasElement.getContext('2d');
 		var packMan = {
 			n: 0,
 			x: 100,
@@ -75,17 +75,17 @@
 						ea = 90 - a;
 						break;
 				}
-				var gradient = c.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
+				var gradient = canvasContext.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
 				gradient.addColorStop(0, '#FEE068');
 				gradient.addColorStop(1, '#9F8D43');
-				c.fillStyle = gradient;
-				c.strokeStyle = '#9F8D43';
-				c.beginPath();
-				c.arc(this.x, this.y, this.radius, Math.PI * sa/180, Math.PI * ea/180);
-				c.lineTo(this.x, this.y);
-				c.closePath();
-				c.fill();
-				c.stroke();
+				canvasContext.fillStyle = gradient;
+				canvasContext.strokeStyle = '#9F8D43';
+				canvasContext.beginPath();
+				canvasContext.arc(this.x, this.y, this.radius, Math.PI * sa/180, Math.PI * ea/180);
+				canvasContext.lineTo(this.x, this.y);
+				canvasContext.closePath();
+				canvasContext.fill();
+				canvasContext.stroke();
 				if(this.vx!=0 || this.vy!=0){
 					this.n++;
 					if(this.n>=80){
@@ -138,23 +138,23 @@
 					else{
 						a=0.5;
 					}
-				var gradient = c.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+				var gradient = canvasContext.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
 				gradient.addColorStop(0, '#0EC400');
 				gradient.addColorStop(1, '#075E00');
-				c.fillStyle = gradient;
-				c.strokeStyle = '#075E00';
-				c.beginPath();
-				c.arc(this.x, this.y, this.r + a, 0, 2*Math.PI);
-				c.fill();
-				c.stroke();
+				canvasContext.fillStyle = gradient;
+				canvasContext.strokeStyle = '#075E00';
+				canvasContext.beginPath();
+				canvasContext.arc(this.x, this.y, this.r + a, 0, 2*Math.PI);
+				canvasContext.fill();
+				canvasContext.stroke();
 				this.n++;
 				if(this.n>=120){
 					this.n=0;
 				}
 			},
 			move: function(){
-				this.x = Math.floor(this.r + Math.random() * (can.width-2*this.r));
-				this.y = Math.floor(this.r + Math.random() * (can.height-2*this.r));
+				this.x = Math.floor(this.r + Math.random() * (canvasElement.width-2*this.r));
+				this.y = Math.floor(this.r + Math.random() * (canvasElement.height-2*this.r));
 			}
 		}
 		var monster = {
@@ -175,26 +175,26 @@
 					a= 20 - Math.floor(this.n/10);
 					s= this.r - (this.n-100)/100*this.r
 				}
-				var gradient = c.createLinearGradient(this.x-this.r,0, this.x+this.r,0);
+				var gradient = canvasContext.createLinearGradient(this.x-this.r,0, this.x+this.r,0);
 				gradient.addColorStop(0, this.color);
 				gradient.addColorStop(1, '#7f0000');
-				c.fillStyle = gradient;
-				c.strokeStyle = '#7f0000';
-				c.beginPath();
-				c.arc(this.x, this.y, this.r, Math.PI, 0);
-				c.lineTo(this.x + this.r, this.y + this.r);
-				c.bezierCurveTo(
+				canvasContext.fillStyle = gradient;
+				canvasContext.strokeStyle = '#7f0000';
+				canvasContext.beginPath();
+				canvasContext.arc(this.x, this.y, this.r, Math.PI, 0);
+				canvasContext.lineTo(this.x + this.r, this.y + this.r);
+				canvasContext.bezierCurveTo(
 					this.x - 0.25*this.r, this.y + this.r/2 + s, 
 					this.x + 0.25*this.r, this.y + 1.5*this.r - s, 
 					this.x - this.r, this.y + this.r);
-				c.closePath();
-				c.fill();
-				c.stroke();
-				c.fillStyle = 'navy';
-				c.beginPath();
-				c.ellipse(this.x, this.y, 15, a, 0, 0, 2*Math.PI);
-				c.fill();
-				c.stroke();
+				canvasContext.closePath();
+				canvasContext.fill();
+				canvasContext.stroke();
+				canvasContext.fillStyle = 'navy';
+				canvasContext.beginPath();
+				canvasContext.ellipse(this.x, this.y, 15, a, 0, 0, 2*Math.PI);
+				canvasContext.fill();
+				canvasContext.stroke();
 				this.n++;
 				if(this.n>=200){
 					this.n=0;
@@ -202,20 +202,20 @@
 
 			},
 			move: function(){
-				this.x = Math.floor(can.width/2 + Math.random() * can.width/2);
-				this.y = Math.floor(can.height/2 + Math.random() * can.height/2);
+				this.x = Math.floor(canvasElement.width/2 + Math.random() * canvasElement.width/2);
+				this.y = Math.floor(canvasElement.height/2 + Math.random() * canvasElement.height/2);
 			}
 		}
 		function loop() {
-			c.clearRect(0,0, can.width, can.height);
+			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
 			background();
 			dot.draw();
 			packMan.draw();
 			monster.draw();
-			if (packMan.y + packMan.vy > can.height || packMan.y + packMan.vy < 0) {
+			if (packMan.y + packMan.vy > canvasElement.height || packMan.y + packMan.vy < 0) {
 				packMan.vy = -packMan.vy;
 			}
-			if (packMan.x + packMan.vx > can.width || packMan.x + packMan.vx < 0) {
+			if (packMan.x + packMan.vx > canvasElement.width || packMan.x + packMan.vx < 0) {
 				packMan.vx = -packMan.vx;
 			}
 			packMan.x += packMan.vx;
@@ -233,8 +233,8 @@
 				if (gameOver==true){
 					return;
 				}
-				e.textContent += "\n"
-				e.textContent += "Вы проиграли!"
+				textElement.textContent += "\n"
+				textElement.textContent += "Вы проиграли!"
 				gameOver = true;
 				packMan.vx = 0;
 				packMan.vy = 0;
@@ -286,33 +286,33 @@
 			}
 		}
 		function score(){
-			e.textContent = "Cчёт: " + sco;
-			sco++;
-			if(sco >= 15){
+			textElement.textContent = "Cчёт: " + gameScore;
+			gameScore++;
+			if(gameScore >= 15){
 				monster.v = 1.25;
 			}
-			if(sco >= 30){
+			if(gameScore >= 30){
 				monster.v = 1.5;
 			}
-			if(sco >= 45){
+			if(gameScore >= 45){
 				monster.v = 1.75;
 			}
-			if(sco >= 60){
+			if(gameScore >= 60){
 				monster.v = 2;
 			}
 		}
 		function background(){
 			var step = 20;
 			var r = 1.5;
-			c.fillStyle = '#696969';
-			c.strokeStyle = '#6E6E6E';
-			for(var y = step; y < can.height; y += step){
-				for(var x = step; x < can.width; x += step){
-					c.beginPath();
-					c.arc(x, y, r, 0, 2*Math.PI);
-					c.closePath();
-					c.fill();
-					c.stroke();
+			canvasContext.fillStyle = '#696969';
+			canvasContext.strokeStyle = '#6E6E6E';
+			for(var y = step; y < canvasElement.height; y += step){
+				for(var x = step; x < canvasElement.width; x += step){
+					canvasContext.beginPath();
+					canvasContext.arc(x, y, r, 0, 2*Math.PI);
+					canvasContext.closePath();
+					canvasContext.fill();
+					canvasContext.stroke();
 				}
 			}
 		}

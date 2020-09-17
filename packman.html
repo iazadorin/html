@@ -102,72 +102,81 @@
 			}
 		}
 		var dot = {
-			stepsCount:0,
-			x:0,
-			y:0,
-			r:10,
-			color:'gold',
+			stepsCount: 0,
+			x: 0, 	// dot position
+			y: 0,
+			radius: 10,
+			color: 'gold',
+			
 			draw: function(){
-					var a = 0;
-					if(this.stepsCount<10){
-						a=0;
-					}
-					else if(this.stepsCount<20){
-						a=0.5;
-					}
-					else if(this.stepsCount<30){
-						a=1;
-					}
-					else if(this.stepsCount<40){
-						a=1.5;
-					}
-					else if(this.stepsCount<50){
-						a=2;
-					}
-					else if(this.stepsCount<60){
-						a=2.5;
-					}
-					else if(this.stepsCount<70){
-						a=3;
-					}
-					else if(this.stepsCount<80){
-						a=2.5;
-					}
-					else if(this.stepsCount<90){
-						a=2;
-					}
-					else if(this.stepsCount<100){
-						a=1.5;
-					}
-					else if(this.stepsCount<110){
-						a=1;
-					}
-					else{
-						a=0.5;
-					}
-				var gradient = canvasContext.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+				// Calculate radius increment
+				var delta;
+				if(this.stepsCount<10){
+					delta=0;
+				}
+				else if(this.stepsCount<20){
+					delta=0.5;
+				}
+				else if(this.stepsCount<30){
+					delta=1;
+				}
+				else if(this.stepsCount<40){
+					delta=1.5;
+				}
+				else if(this.stepsCount<50){
+					delta=2;
+				}
+				else if(this.stepsCount<60){
+					delta=2.5;
+				}
+				else if(this.stepsCount<70){
+					delta=3;
+				}
+				else if(this.stepsCount<80){
+					delta=2.5;
+				}
+				else if(this.stepsCount<90){
+					delta=2;
+				}
+				else if(this.stepsCount<100){
+					delta=1.5;
+				}
+				else if(this.stepsCount<110){
+					delta=1;
+				}
+				else{
+					delta=0.5;
+				}
+				
+				// Dot draw
+				var gradient = canvasContext.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
 				gradient.addColorStop(0, '#0EC400');
 				gradient.addColorStop(1, '#075E00');
 				canvasContext.fillStyle = gradient;
 				canvasContext.strokeStyle = '#075E00';
 				canvasContext.beginPath();
-				canvasContext.arc(this.x, this.y, this.r + a, 0, 2*Math.PI);
+				canvasContext.arc(this.x, this.y, this.radius + delta, 0, 2*Math.PI);
 				canvasContext.fill();
 				canvasContext.stroke();
+				
+				// Advanse stepsCount
 				this.stepsCount++;
 				if(this.stepsCount>=120){
 					this.stepsCount=0;
 				}
 			},
+			
 			move: function(){
-				this.x = Math.floor(this.r + Math.random() * (canvasElement.width-2*this.r));
-				this.y = Math.floor(this.r + Math.random() * (canvasElement.height-2*this.r));
+				// Move dot to a random position
+				this.x = Math.floor(this.radius + Math.random() * (canvasElement.width-2*this.radius));
+				this.y = Math.floor(this.radius + Math.random() * (canvasElement.height-2*this.radius));
 			}
 		}
+		
 		var monster = {
 			x:50,
 			y:60,
-			r:25,
+			radius:25,
 			v:1,
 			stepsCount:0,
 			color:'red',
@@ -176,24 +185,24 @@
 				var a = 0;
 				if(this.stepsCount<100){
 					a=Math.floor(this.stepsCount/10);
-					s=this.stepsCount/100*this.r;
+					s=this.stepsCount/100*this.radius;
 				}
 				else {
 					a= 20 - Math.floor(this.stepsCount/10);
-					s= this.r - (this.stepsCount-100)/100*this.r
+					s= this.radius - (this.stepsCount-100)/100*this.radius
 				}
-				var gradient = canvasContext.createLinearGradient(this.x-this.r,0, this.x+this.r,0);
+				var gradient = canvasContext.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
 				gradient.addColorStop(0, this.color);
 				gradient.addColorStop(1, '#7f0000');
 				canvasContext.fillStyle = gradient;
 				canvasContext.strokeStyle = '#7f0000';
 				canvasContext.beginPath();
-				canvasContext.arc(this.x, this.y, this.r, Math.PI, 0);
-				canvasContext.lineTo(this.x + this.r, this.y + this.r);
+				canvasContext.arc(this.x, this.y, this.radius, Math.PI, 0);
+				canvasContext.lineTo(this.x + this.radius, this.y + this.radius);
 				canvasContext.bezierCurveTo(
-					this.x - 0.25*this.r, this.y + this.r/2 + s, 
-					this.x + 0.25*this.r, this.y + 1.5*this.r - s, 
-					this.x - this.r, this.y + this.r);
+					this.x - 0.25*this.radius, this.y + this.radius/2 + s, 
+					this.x + 0.25*this.radius, this.y + 1.5*this.radius - s, 
+					this.x - this.radius, this.y + this.radius);
 				canvasContext.closePath();
 				canvasContext.fill();
 				canvasContext.stroke();
@@ -227,7 +236,7 @@
 			}
 			packMan.x += packMan.vx;
 			packMan.y += packMan.vy;
-			if (Math.abs(packMan.x - dot.x) < packMan.radius + dot.r && Math.abs(packMan.y - dot.y) < packMan.radius + dot.r){
+			if (Math.abs(packMan.x - dot.x) < packMan.radius + dot.radius && Math.abs(packMan.y - dot.y) < packMan.radius + dot.radius){
 				dot.move();
 				score();
 			}
@@ -236,7 +245,7 @@
 			window.requestAnimationFrame(loop);
 		}
 		function fail(){
-			if (Math.abs(packMan.x - monster.x) < packMan.radius + monster.r && Math.abs(packMan.y - monster.y) < packMan.radius + monster.r){
+			if (Math.abs(packMan.x - monster.x) < packMan.radius + monster.radius && Math.abs(packMan.y - monster.y) < packMan.radius + monster.radius){
 				if (gameOver==true){
 					return;
 				}
@@ -310,13 +319,13 @@
 		}
 		function background(){
 			var step = 20;
-			var r = 1.5;
+			var radius = 1.5;
 			canvasContext.fillStyle = '#696969';
 			canvasContext.strokeStyle = '#6E6E6E';
 			for(var y = step; y < canvasElement.height; y += step){
 				for(var x = step; x < canvasElement.width; x += step){
 					canvasContext.beginPath();
-					canvasContext.arc(x, y, r, 0, 2*Math.PI);
+					canvasContext.arc(x, y, radius, 0, 2*Math.PI);
 					canvasContext.closePath();
 					canvasContext.fill();
 					canvasContext.stroke();

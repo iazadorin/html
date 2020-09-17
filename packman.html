@@ -31,61 +31,68 @@
 			radius: 25,
 			color: 'Moccasin',
 			draw: function() {
-				var a = 30;
+				// calculate angle of mouth
+				var angle;
 				if(this.stepsCount<10){
-					a=1;
+					angle=1;
 				}
 				else if(this.stepsCount<20){
-					a=15;
+					angle=15;
 				}
 				else if(this.stepsCount<30){
-					a=30;
+					angle=30;
 				}
 				else if(this.stepsCount<40){
-					a=45;
+					angle=45;
 				}
 				else if(this.stepsCount<50){
-					a=60;
+					angle=60;
 				}
 				else if(this.stepsCount<60){
-					a=45;
+					angle=45;
 				}
 				else if(this.stepsCount<70){
-					a=30;
+					angle=30;
 				}
 				else{
-					a=15;
+					angle=15;
 				}
-				var ea, sa;
+				
+				// Calculate start and end angle
+				var startAngle, endAngle;
 				switch (this.direction){
 					case 0:
-						sa = a;
-						ea = 360 - a;
+						startAngle = angle;
+						endAngle = 360 - angle;
 						break;
 					case 1:
-						sa = a+270;
-						ea = 270 - a;
+						startAngle = angle+270;
+						endAngle = 270 - angle;
 						break;
 					case 2:
-						sa = 180 + a;
-						ea = 180 - a;
+						startAngle = 180 + angle;
+						endAngle = 180 - angle;
 						break;
 					default:
-						sa = 90 + a;
-						ea = 90 - a;
+						startAngle = 90 + angle;
+						endAngle = 90 - angle;
 						break;
 				}
+				
+				// Draw packMan
 				var gradient = canvasContext.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
 				gradient.addColorStop(0, '#FEE068');
 				gradient.addColorStop(1, '#9F8D43');
 				canvasContext.fillStyle = gradient;
 				canvasContext.strokeStyle = '#9F8D43';
 				canvasContext.beginPath();
-				canvasContext.arc(this.x, this.y, this.radius, Math.PI * sa/180, Math.PI * ea/180);
+				canvasContext.arc(this.x, this.y, this.radius, Math.PI * startAngle/180, Math.PI * endAngle/180);
 				canvasContext.lineTo(this.x, this.y);
 				canvasContext.closePath();
 				canvasContext.fill();
 				canvasContext.stroke();
+				
+				// Advanse stepsCount
 				if(this.vx!=0 || this.vy!=0){
 					this.stepsCount++;
 					if(this.stepsCount>=80){

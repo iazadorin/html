@@ -10,7 +10,7 @@
 		}
 	</style>
 </head>
-<body onload="score()">
+<body onload="incrementScore()">
 	<canvas id ='canvasElement' width=400 height=400 style='background-color:black'>
 	</canvas>
 	<pre id="p" style="font-size:25px"></pre>
@@ -236,7 +236,7 @@
 		function iteration() {
 			// Draw all objects
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
-			background();
+			drawBackground();
 			dot.draw();
 			packMan.draw();
 			monster.draw();
@@ -256,7 +256,7 @@
 			// Check if packMan touches dot
 			if (Math.abs(packMan.x - dot.x) < packMan.radius + dot.radius && Math.abs(packMan.y - dot.y) < packMan.radius + dot.radius){
 				dot.move();
-				score();
+				incrementScore();
 			}
 			
 			moveMonster();
@@ -275,6 +275,7 @@
 			// Next iteration
 			window.requestAnimationFrame(iteration);
 		}
+		
 		function keyDown(event){
 			const keyName = event.key;
 			if (gameOver==true){
@@ -306,6 +307,7 @@
 				
 			}
 		}
+		
 		function moveMonster(){
 			if(monster.x > packMan.x){
 				monster.x -=monster.velocity
@@ -320,7 +322,8 @@
 				monster.y +=monster.velocity
 			}
 		}
-		function score(){
+		
+		function incrementScore(){
 			textElement.textContent = "Cчёт: " + gameScore;
 			gameScore++;
 			if(gameScore >= 15){
@@ -336,7 +339,8 @@
 				monster.velocity = 2;
 			}
 		}
-		function background(){
+		
+		function drawBackground(){
 			var step = 20;
 			var radius = 1.5;
 			canvasContext.fillStyle = '#696969';
@@ -351,9 +355,15 @@
 				}
 			}
 		}
+		
+		// Subscribe on keyboard evens
 		document.addEventListener('keydown', keyDown, false);
+		
+		// Initial objects location
 		dot.move();
 		monster.move();	
+		
+		// Enter game loop
 		iteration();
 	</script>
 

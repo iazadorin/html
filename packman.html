@@ -22,11 +22,11 @@
 		var canvasContext = canvasElement.getContext('2d');
 		var packMan = {
 			stepsCount: 0,
-			x: 100,
+			x: 100, 	// packMan position
 			y: 100,
-			vx: 0,
+			vx: 0,		// current packMan velocity
 			vy: 0,
-			v:4,
+			maxV: 4,	// max packMan velocity
 			dir: 0,
 			radius: 25,
 			color: 'Moccasin',
@@ -247,22 +247,22 @@
 			}
 			if(keyName==="ArrowUp"){
 				packMan.dir = 1;
-				packMan.vy=-packMan.v;
+				packMan.vy=-packMan.maxV;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowDown"){
 				packMan.dir = 3;
-				packMan.vy=packMan.v;
+				packMan.vy=packMan.maxV;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowRight"){
 				packMan.dir = 0;
-				packMan.vx=packMan.v;
+				packMan.vx=packMan.maxV;
 				packMan.vy=0;
 			}
 			if(keyName==="ArrowLeft"){
 				packMan.dir = 2;
-				packMan.vx=-packMan.v;
+				packMan.vx=-packMan.maxV;
 				packMan.vy=0;
 			}
 			if(keyName===" "){

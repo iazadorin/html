@@ -231,39 +231,49 @@
 				this.y = Math.floor(canvasElement.height/2 + Math.random() * canvasElement.height/2);
 			}
 		}
-		function loop() {
+		
+		// Iteration of the main loop
+		function iteration() {
+			// Draw all objects
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
 			background();
 			dot.draw();
 			packMan.draw();
 			monster.draw();
+			
+			// Prevent packMan from runnig away: veer
 			if (packMan.y + packMan.vy > canvasElement.height || packMan.y + packMan.vy < 0) {
 				packMan.vy = -packMan.vy;
 			}
 			if (packMan.x + packMan.vx > canvasElement.width || packMan.x + packMan.vx < 0) {
 				packMan.vx = -packMan.vx;
 			}
+			
+			// Move packMan
 			packMan.x += packMan.vx;
 			packMan.y += packMan.vy;
+			
+			// Check if packMan touches dot
 			if (Math.abs(packMan.x - dot.x) < packMan.radius + dot.radius && Math.abs(packMan.y - dot.y) < packMan.radius + dot.radius){
 				dot.move();
 				score();
 			}
-			chase();
-			fail();
-			window.requestAnimationFrame(loop);
-		}
-		function fail(){
+			
+			moveMonster();
+			
+			// Check if packMan touches monster
 			if (Math.abs(packMan.x - monster.x) < packMan.radius + monster.radius && Math.abs(packMan.y - monster.y) < packMan.radius + monster.radius){
-				if (gameOver==true){
-					return;
+				if (gameOver!=true){
+					textElement.textContent += "\n"
+					textElement.textContent += "Вы проиграли!"
+					gameOver = true;
+					packMan.vx = 0;
+					packMan.vy = 0;
 				}
-				textElement.textContent += "\n"
-				textElement.textContent += "Вы проиграли!"
-				gameOver = true;
-				packMan.vx = 0;
-				packMan.vy = 0;
 			}
+			
+			// Next iteration
+			window.requestAnimationFrame(iteration);
 		}
 		function keyDown(event){
 			const keyName = event.key;
@@ -296,7 +306,7 @@
 				
 			}
 		}
-		function chase(){
+		function moveMonster(){
 			if(monster.x > packMan.x){
 				monster.x -=monster.velocity
 			}
@@ -344,7 +354,7 @@
 		document.addEventListener('keydown', keyDown, false);
 		dot.move();
 		monster.move();	
-		loop();
+		iteration();
 	</script>
 
 </body>

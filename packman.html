@@ -174,50 +174,59 @@
 		}
 		
 		var monster = {
-			x:50,
-			y:60,
-			radius:25,
-			v:1,
-			stepsCount:0,
-			color:'red',
+			x: 50,	// monster position
+			y: 60,
+			radius: 25,
+			velocity: 1,
+			stepsCount: 0,
+			color: 'red',
+			
 			draw: function(){
-				var s = 0;
-				var a = 0;
+			
+				// Calculate legs and mouth radius
+				var legsR = 0;
+				var mouthR = 0;
 				if(this.stepsCount<100){
-					a=Math.floor(this.stepsCount/10);
-					s=this.stepsCount/100*this.radius;
+					mouthR=Math.floor(this.stepsCount/10);
+					legsR=this.stepsCount/100*this.radius;
 				}
 				else {
-					a= 20 - Math.floor(this.stepsCount/10);
-					s= this.radius - (this.stepsCount-100)/100*this.radius
+					mouthR= 20 - Math.floor(this.stepsCount/10);
+					legsR= this.radius - (this.stepsCount-100)/100*this.radius
 				}
+				
+				// Draw monster
 				var gradient = canvasContext.createLinearGradient(this.x-this.radius,0, this.x+this.radius,0);
 				gradient.addColorStop(0, this.color);
 				gradient.addColorStop(1, '#7f0000');
 				canvasContext.fillStyle = gradient;
 				canvasContext.strokeStyle = '#7f0000';
 				canvasContext.beginPath();
-				canvasContext.arc(this.x, this.y, this.radius, Math.PI, 0);
+				canvasContext.arc(this.x, this.y, this.radius, Math.PI, 0); 		// head
 				canvasContext.lineTo(this.x + this.radius, this.y + this.radius);
-				canvasContext.bezierCurveTo(
-					this.x - 0.25*this.radius, this.y + this.radius/2 + s, 
-					this.x + 0.25*this.radius, this.y + 1.5*this.radius - s, 
+				canvasContext.bezierCurveTo(										// legs
+					this.x - 0.25*this.radius, this.y + this.radius/2 + legsR, 
+					this.x + 0.25*this.radius, this.y + 1.5*this.radius - legsR, 
 					this.x - this.radius, this.y + this.radius);
 				canvasContext.closePath();
 				canvasContext.fill();
 				canvasContext.stroke();
 				canvasContext.fillStyle = 'navy';
 				canvasContext.beginPath();
-				canvasContext.ellipse(this.x, this.y, 15, a, 0, 0, 2*Math.PI);
+				canvasContext.ellipse(this.x, this.y, 15, mouthR, 0, 0, 2*Math.PI);	// mouth
 				canvasContext.fill();
 				canvasContext.stroke();
+				
+				// Advanse stepsCount
 				this.stepsCount++;
 				if(this.stepsCount>=200){
 					this.stepsCount=0;
 				}
 
 			},
+			
 			move: function(){
+				// Move monster to a random position
 				this.x = Math.floor(canvasElement.width/2 + Math.random() * canvasElement.width/2);
 				this.y = Math.floor(canvasElement.height/2 + Math.random() * canvasElement.height/2);
 			}
@@ -289,32 +298,32 @@
 		}
 		function chase(){
 			if(monster.x > packMan.x){
-				monster.x -=monster.v
+				monster.x -=monster.velocity
 			}
 			if(monster.y > packMan.y){
-				monster.y -=monster.v
+				monster.y -=monster.velocity
 			}
 			if(monster.x < packMan.x){
-				monster.x +=monster.v
+				monster.x +=monster.velocity
 			}
 			if(monster.y < packMan.y){
-				monster.y +=monster.v
+				monster.y +=monster.velocity
 			}
 		}
 		function score(){
 			textElement.textContent = "Cчёт: " + gameScore;
 			gameScore++;
 			if(gameScore >= 15){
-				monster.v = 1.25;
+				monster.velocity = 1.25;
 			}
 			if(gameScore >= 30){
-				monster.v = 1.5;
+				monster.velocity = 1.5;
 			}
 			if(gameScore >= 45){
-				monster.v = 1.75;
+				monster.velocity = 1.75;
 			}
 			if(gameScore >= 60){
-				monster.v = 2;
+				monster.velocity = 2;
 			}
 		}
 		function background(){

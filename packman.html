@@ -27,7 +27,7 @@
 			vx: 0,		// current packMan velocity
 			vy: 0,
 			maxV: 4,	// max packMan velocity
-			dir: 0,
+			direction: 0,
 			radius: 25,
 			color: 'Moccasin',
 			draw: function() {
@@ -57,7 +57,7 @@
 					a=15;
 				}
 				var ea, sa;
-				switch (this.dir){
+				switch (this.direction){
 					case 0:
 						sa = a;
 						ea = 360 - a;
@@ -246,22 +246,22 @@
 				return;
 			}
 			if(keyName==="ArrowUp"){
-				packMan.dir = 1;
+				packMan.direction = 1;
 				packMan.vy=-packMan.maxV;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowDown"){
-				packMan.dir = 3;
+				packMan.direction = 3;
 				packMan.vy=packMan.maxV;
 				packMan.vx=0;
 			}
 			if(keyName==="ArrowRight"){
-				packMan.dir = 0;
+				packMan.direction = 0;
 				packMan.vx=packMan.maxV;
 				packMan.vy=0;
 			}
 			if(keyName==="ArrowLeft"){
-				packMan.dir = 2;
+				packMan.direction = 2;
 				packMan.vx=-packMan.maxV;
 				packMan.vy=0;
 			}

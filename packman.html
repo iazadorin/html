@@ -101,12 +101,45 @@
 				}
 			}
 		}
-		var dot = {
+		var dots = {
+			dotsCount: 5,
 			stepsCount: 0,
-			x: 0, 	// dot position
-			y: 0,
+			x: [], 	// dots position
+			y: [],
 			radius: 10,
 			color: 'gold',
+			
+			// Move all dots to -1
+			init: function(){
+				for(var index = 0; index < this.dotsCount; index++){
+					this.x[index] = -1;
+					this.y[index] = -1;
+				}
+				this.move();
+			},
+			
+			// Move negative dots to a random position
+			move: function(){
+				for (var index = 0; index < this.dotsCount; index++){
+					if(this.x[index] < 0 && this.y[index] < 0){
+						this.x[index] = Math.floor(this.radius + Math.random() * (canvasElement.width-2*this.radius));
+						this.y[index] = Math.floor(this.radius + Math.random() * (canvasElement.height-2*this.radius));
+					}
+				}
+			},
+			
+			// Check if packMan touches dots
+			touch: function(x, y, radius){
+				for (var index = 0; index < this.dotsCount; index++){
+					if (Math.abs(x - this.x[index]) < radius + this.radius && Math.abs(y - this.y[index]) < radius + this.radius){
+						this.x[index] = -1;
+						this.y[index] = -1;
+						this.move();
+						return true;
+					}
+				}
+				return false;
+			},
 			
 			draw: function(){
 				// Calculate radius increment
@@ -148,29 +181,27 @@
 					delta=0.5;
 				}
 				
-				// Dot draw
-				var gradient = canvasContext.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-				gradient.addColorStop(0, '#0EC400');
-				gradient.addColorStop(1, '#075E00');
-				canvasContext.fillStyle = gradient;
-				canvasContext.strokeStyle = '#075E00';
-				canvasContext.beginPath();
-				canvasContext.arc(this.x, this.y, this.radius + delta, 0, 2*Math.PI);
-				canvasContext.fill();
-				canvasContext.stroke();
+				// Dots draw
+				for (var index = 0; index < this.dotsCount; index++){
+					var gradient = canvasContext.createRadialGradient(this.x[index], this.y[index], 0, this.x[index], this.y[index], this.radius);
+					gradient.addColorStop(0, '#0EC400');
+					gradient.addColorStop(1, '#075E00');
+					canvasContext.fillStyle = gradient;
+					canvasContext.strokeStyle = '#075E00';
+					canvasContext.beginPath();
+					canvasContext.arc(this.x[index], this.y[index], this.radius + delta, 0, 2*Math.PI);
+					canvasContext.fill();
+					canvasContext.stroke();
+				}
+				
 				
 				// Advanse stepsCount
 				this.stepsCount++;
 				if(this.stepsCount>=120){
 					this.stepsCount=0;
 				}
-			},
-			
-			move: function(){
-				// Move dot to a random position
-				this.x = Math.floor(this.radius + Math.random() * (canvasElement.width-2*this.radius));
-				this.y = Math.floor(this.radius + Math.random() * (canvasElement.height-2*this.radius));
 			}
+			
 		}
 		
 		var monster = {
@@ -237,7 +268,7 @@
 			// Draw all objects
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
 			drawBackground();
-			dot.draw();
+			dots.draw();
 			packMan.draw();
 			monster.draw();
 			
@@ -253,9 +284,8 @@
 			packMan.x += packMan.vx;
 			packMan.y += packMan.vy;
 			
-			// Check if packMan touches dot
-			if (Math.abs(packMan.x - dot.x) < packMan.radius + dot.radius && Math.abs(packMan.y - dot.y) < packMan.radius + dot.radius){
-				dot.move();
+			// Check if packMan touches dots
+			if(dots.touch(packMan.x, packMan.y, packMan.radius)){
 				incrementScore();
 			}
 			
@@ -360,7 +390,7 @@
 		document.addEventListener('keydown', keyDown, false);
 		
 		// Initial objects location
-		dot.move();
+		dots.init();
 		monster.move();	
 		
 		// Enter game loop

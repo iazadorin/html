@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+	<title>
+		Обнаружение алмаза Монах
+	</title>
+</head>
+<body>
+	<canvas id ='canvasElement' width=400 height=400 style='background-color:black'>
+	</canvas>
+	<pre id="p" style="font-size:25px"></pre>
+	<script>
+		var textElement = document.getElementById('p');
+		var canvasElement = document.getElementById('canvasElement');
+		var canvasContext = canvasElement.getContext('2d');
+		var gameOver = false;
+		var colorChanged = false;
+		var circle = {
+			x: 200,
+			y: 200,
+			radius: 180,
+			color: '#DAA520',
+			draw: function(){
+				canvasContext.beginPath();
+				canvasContext.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+				canvasContext.closePath();
+				canvasContext.fillStyle = this.color;
+				canvasContext.strokeStyle = '#000000';
+				canvasContext.fill();
+				canvasContext.stroke();
+			}
+		}
+		function redraw(){
+			circle.color = '#E91025';
+			colorChanged = true;
+			circle.draw();
+		}
+		function mouseClick(event){
+			if (gameOver==true){
+				return;
+			}
+			if(colorChanged){
+				
+			}
+			else{
+				textElement.textContent += "Вы проиграли!"
+				gameOver = true;
+			}
+		}
+		setTimeout(redraw, Math.floor(2000 + Math.random() * 3000));
+		document.addEventListener('click', mouseClick, false);
+		circle.draw();
+	</script>
+</body>

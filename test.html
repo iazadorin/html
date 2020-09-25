@@ -14,6 +14,7 @@
 		var canvasContext = canvasElement.getContext('2d');
 		var gameOver = false;
 		var colorChanged = false;
+		var startTime;
 		var circle = {
 			x: 200,
 			y: 200,
@@ -33,13 +34,16 @@
 			circle.color = '#E91025';
 			colorChanged = true;
 			circle.draw();
+			startTime = Date.now();
 		}
 		function mouseClick(event){
 			if (gameOver==true){
 				return;
 			}
 			if(colorChanged){
-				
+				var endTime = Date.now();
+				textElement.textContent += "Ваш результат: " + (endTime - startTime) + " миллисекунд.";
+				gameOver = true;
 			}
 			else{
 				textElement.textContent += "Вы проиграли!"

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+	<title>
+		Обнаружение алмаза Монах
+	</title>
+</head>
+<body>
+	<canvas id ='canvasElement' width=600 height=600 style='background-color:black'>
+	</canvas>
+	<pre id="p" style="font-size:25px"></pre>
+	<script>
+		var textElement = document.getElementById('p');
+		var canvasElement = document.getElementById('canvasElement');
+		var canvasContext = canvasElement.getContext('2d');
+		var gameOver = false;
+		var score = 0;
+		var circle = {
+			x: 300,
+			y: 300,
+			radius: 45,
+			color: '#00FFFF',
+			draw: function(){
+				canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
+				canvasContext.beginPath();
+				canvasContext.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+				canvasContext.closePath();
+				canvasContext.fillStyle = this.color;
+				canvasContext.strokeStyle = '#000000';
+				canvasContext.fill();
+				canvasContext.stroke();
+			},
+			move: function(){
+				this.x = Math.floor(circle.radius + Math.random() * (canvasElement.width - 2*circle.radius));
+				this.y = Math.floor(circle.radius + Math.random() * (canvasElement.height - 2*circle.radius));
+			}
+		}
+		function mouseClick(event){
+			if (gameOver==true){
+				return;
+			}
+			var rect = canvasElement.getBoundingClientRect();
+			var dX = circle.x - event.clientX + rect.left;
+			var dY = circle.y - event.clientY + rect.top;
+			var distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+			if (distance < circle.radius){
+				score++;
+				circle.move();
+				textElement.textContext = 'Твой счёт: '
+				textElement.textContext += score;
+				circle.draw();
+			}
+		}
+		circle.draw();
+		canvasElement.addEventListener('click', mouseClick, false);
+	</script>
+</body>

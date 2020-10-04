@@ -43,14 +43,25 @@
 			var dY = circle.y - event.clientY + rect.top;
 			var distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 			if (distance < circle.radius){
-				score++;
+				score+=3;
 				circle.move();
-				textElement.textContext = 'Твой счёт: '
-				textElement.textContext += score;
+				textElement.textContent = 'Твой счёт: '
+				textElement.textContent += score;
 				circle.draw();
 			}
+			else{
+				score-=4;
+				textElement.textContent = 'Твой счёт: '
+				textElement.textContent += score;
+			}
+		}
+		function gameover(){
+			gameOver = true;
+			textElement.textContent = 'Твой окончательный счёт: '
+			textElement.textContent += score;
 		}
 		circle.draw();
+		setTimeout(gameover, 60000);
 		canvasElement.addEventListener('click', mouseClick, false);
 	</script>
 </body>

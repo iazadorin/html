@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Обнаружение алмаза Монах
+	</title>
+	<style>
+		canvas{
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<canvas id ='canvasElement' width=600 height=600 style='background-color:#79C1BD'>
+	</canvas>
+	<div style="display: none;">
+		<img id = 'sourse'
+			src = "plane1.png"
+		/>
+	</div>
+	<pre id='p' style="font-size:25px"></pre>
+	<script>
+		var textElement = document.getElementById('p');
+		var canvasElement = document.getElementById('canvasElement');
+		var canvasContext = canvasElement.getContext('2d');
+		var image = document.getElementById('sourse');
+		var gameOver = false;
+		var score = 0;
+		var pushka = {
+			x: 300,
+			y: 540,
+			a: 30,
+			b: 80,
+			c: 50,
+			d: 10,
+			color: '#000000',
+			draw: function(){
+				canvasContext.drawImage(image, this.x - image.width/2, this.y - image.height/2);
+			/*
+				canvasContext.beginPath();
+				canvasContext.moveTo(this.x + this.b/2, this.y + this.a/2);
+				canvasContext.lineTo(this.x - this.b/2, this.y + this.a/2);
+				canvasContext.lineTo(this.x - this.b/2, this.y - this.a/2);
+				canvasContext.lineTo(this.x + this.b/2, this.y - this.a/2);
+				canvasContext.closePath();
+				canvasContext.fillStyle = this.color;
+				canvasContext.strokeStyle = '#000000';
+				canvasContext.fill();
+				canvasContext.stroke();
+				canvasContext.beginPath();
+				canvasContext.moveTo(this.x + this.d/2, this.y - this.a/2);
+				canvasContext.lineTo(this.x + this.d/2, this.y - this.a/2 - this.c);
+				canvasContext.lineTo(this.x - this.d/2, this.y - this.a/2 - this.c);
+				canvasContext.lineTo(this.x - this.d/2, this.y - this.a/2);
+				canvasContext.lineTo(this.x - this.d/2, this.y - this.a/2);
+				canvasContext.fillStyle = this.color;
+				canvasContext.strokeStyle = '#000000';
+				canvasContext.fill();
+				canvasContext.stroke();
+			*/
+			
+			}
+		}
+		function move(e){
+			pushka.x = e.offsetX;
+			pushka.y = e.offsetY;
+			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
+		}
+		function iteration(){
+			pushka.draw();	
+			window.requestAnimationFrame(iteration);
+		}
+		canvasElement.addEventListener('mousemove', move);
+		iteration();
+	</script>
+</body>

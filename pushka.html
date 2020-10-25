@@ -85,7 +85,7 @@
 				this.y+=this.v;
 				if	(this.y > canvasElement.height + enemyPlaneImg.height/2){
 					this.x = Math.floor(enemyPlaneImg.width/2 + Math.random() * (canvasElement.width - enemyPlaneImg.width));
-					this.y = -50;
+					this.y = Math.floor(-enemyPlaneImg.height - Math.random() * (canvasElement.height - enemyPlaneImg.height));
 				}
 			}
 		}
@@ -100,7 +100,7 @@
 				this.y+=this.v;
 				if	(this.y > canvasElement.height + enemyTankImg.height/2){
 					this.x = Math.floor(enemyTankImg.width/2 + Math.random() * (canvasElement.width - enemyTankImg.width));
-					this.y = -50;
+					this.y = Math.floor(-enemyTankImg.height - Math.random() * (canvasElement.height - enemyTankImg.height));;
 				}
 			}
 		}

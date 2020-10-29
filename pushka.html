@@ -45,7 +45,9 @@
 			b: 80,
 			c: 50,
 			d: 10,
-			color: '#000000',
+			color: '#FF7E00',
+			traceVisible: false,
+			numberOfFramesTheTraceIsVisibleYet: 0,
 			draw: function(){
 				canvasContext.drawImage(planeImg, this.x - planeImg.width/2, this.y - planeImg.height/2);
 			/*
@@ -70,7 +72,21 @@
 				canvasContext.fill();
 				canvasContext.stroke();
 			*/
-			
+				if (this.numberOfFramesTheTraceIsVisibleYet < 3){
+					if (this.traceVisible){ 
+						canvasContext.beginPath();
+						canvasContext.moveTo(this.x, this.y - planeImg.height/2);
+						canvasContext.lineTo(this.x, 0);
+						canvasContext.closePath();
+						canvasContext.strokeStyle = this.color;
+						canvasContext.stroke();
+						this.numberOfFramesTheTraceIsVisibleYet++;
+					}
+				}
+				else {
+					this.traceVisible = false;
+					this.numberOfFramesTheTraceIsVisibleYet = 0;
+				}
 			}
 		}
 		var enemyPlane = {
@@ -104,9 +120,16 @@
 				}
 			}
 		}
-		function move(e){
+		
+		function mouseMove(e){
 			plane.x = e.offsetX;
 			plane.y = e.offsetY;
+		}
+		function mouseClick(event){
+			if (gameOver==true){
+				return;
+			}
+			plane.traceVisible = true;
 		}
 		function iteration(){
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
@@ -117,7 +140,8 @@
 			plane.draw();
 			window.requestAnimationFrame(iteration);
 		}
-		canvasElement.addEventListener('mousemove', move);
+		canvasElement.addEventListener('mousemove', mouseMove);
+		canvasElement.addEventListener('click', mouseClick);
 		iteration();
 	</script>
 </body>

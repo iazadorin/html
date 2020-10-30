@@ -28,6 +28,11 @@
 			src = "enemy-tank.png"
 		/>
 	</div>
+	<div style="display: none;">
+		<img id = 'fire'
+			src = "fire.png"
+		/>
+	</div>
 	<pre id='p' style="font-size:25px"></pre>
 	<script>
 		var textElement = document.getElementById('p');
@@ -36,42 +41,19 @@
 		var planeImg = document.getElementById('plane');
 		var enemyPlaneImg = document.getElementById('enemyPlane');
 		var enemyTankImg = document.getElementById('enemyTank');
+		var fireImg = document.getElementById('fire');
 		var gameOver = false;
 		var score = 0;
 		var plane = {
 			x: 300,
 			y: 540,
-			a: 30,
-			b: 80,
-			c: 50,
-			d: 10,
+			dmgOfRocket: 25,
+			dmgOfBullet: 5,
 			color: '#FF7E00',
 			traceVisible: false,
 			numberOfFramesTheTraceIsVisibleYet: 0,
 			draw: function(){
 				canvasContext.drawImage(planeImg, this.x - planeImg.width/2, this.y - planeImg.height/2);
-			/*
-				canvasContext.beginPath();
-				canvasContext.moveTo(this.x + this.b/2, this.y + this.a/2);
-				canvasContext.lineTo(this.x - this.b/2, this.y + this.a/2);
-				canvasContext.lineTo(this.x - this.b/2, this.y - this.a/2);
-				canvasContext.lineTo(this.x + this.b/2, this.y - this.a/2);
-				canvasContext.closePath();
-				canvasContext.fillStyle = this.color;
-				canvasContext.strokeStyle = '#000000';
-				canvasContext.fill();
-				canvasContext.stroke();
-				canvasContext.beginPath();
-				canvasContext.moveTo(this.x + this.d/2, this.y - this.a/2);
-				canvasContext.lineTo(this.x + this.d/2, this.y - this.a/2 - this.c);
-				canvasContext.lineTo(this.x - this.d/2, this.y - this.a/2 - this.c);
-				canvasContext.lineTo(this.x - this.d/2, this.y - this.a/2);
-				canvasContext.lineTo(this.x - this.d/2, this.y - this.a/2);
-				canvasContext.fillStyle = this.color;
-				canvasContext.strokeStyle = '#000000';
-				canvasContext.fill();
-				canvasContext.stroke();
-			*/
 				if (this.numberOfFramesTheTraceIsVisibleYet < 3){
 					if (this.traceVisible){ 
 						canvasContext.beginPath();
@@ -93,9 +75,13 @@
 			v: 2,
 			x: 300,
 			y: -50,
+			hp: 25,
 			draw: function(){
 				canvasContext.drawImage(enemyPlaneImg, this.x - enemyPlaneImg.width/2, this.y - enemyPlaneImg.height/2);
-				
+				if(this.hp <= 0){
+					canvasContext.drawImage(fireImg, this.x - enemyPlaneImg.width/2, this.y - enemyPlaneImg.height/2);
+					
+				}
 			},
 			move: function(){
 				this.y+=this.v;
@@ -109,6 +95,7 @@
 			v: 1,
 			x: 300,
 			y: -60,
+			hp: 50,
 			draw: function(){
 				canvasContext.drawImage(enemyTankImg, this.x - enemyTankImg.width/2, this.y - enemyTankImg.height/2);
 			},
@@ -130,6 +117,9 @@
 				return;
 			}
 			plane.traceVisible = true;
+			if (plane.x > enemyPlane.x - enemyPlaneImg.width/2 &&  plane.x < enemyPlane.x + enemyPlaneImg.width/2){
+				enemyPlane.hp -= plane.dmgOfBullet;
+			}
 		}
 		function iteration(){
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);

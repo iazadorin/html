@@ -29,8 +29,18 @@
 		/>
 	</div>
 	<div style="display: none;">
-		<img id = 'fire'
-			src = "fire.png"
+		<img id = 'fire-small'
+			src = "fire-small.png"
+		/>
+	</div>
+	<div style="display: none;">
+		<img id = 'fire-medium'
+			src = "fire-medium.png"
+		/>
+	</div>
+	<div style="display: none;">
+		<img id = 'fire-large'
+			src = "fire-large.png"
 		/>
 	</div>
 	<pre id='p' style="font-size:25px"></pre>
@@ -41,7 +51,9 @@
 		var planeImg = document.getElementById('plane');
 		var enemyPlaneImg = document.getElementById('enemyPlane');
 		var enemyTankImg = document.getElementById('enemyTank');
-		var fireImg = document.getElementById('fire');
+		var fireImg1 = document.getElementById('fire-small');
+		var fireImg2 = document.getElementById('fire-medium');
+		var fireImg3 = document.getElementById('fire-large');
 		var gameOver = false;
 		var score = 0;
 		var plane = {
@@ -76,17 +88,42 @@
 			x: 300,
 			y: -50,
 			hp: 25,
+			fireImgNumber: 0,
+			frameNumber: 0,
 			draw: function(){
 				canvasContext.drawImage(enemyPlaneImg, this.x - enemyPlaneImg.width/2, this.y - enemyPlaneImg.height/2);
 				if(this.hp <= 0){
-					canvasContext.drawImage(fireImg, this.x - enemyPlaneImg.width/2, this.y - enemyPlaneImg.height/2);
+					var img;
+					if(this.fireImgNumber==0){
+						img = fireImg1;
+					}
+					else if(this.fireImgNumber==1){
+						img = fireImg2;
+					}
+					else{
+						img = fireImg3;
+					}
+					canvasContext.drawImage(img, this.x - img.width/2, this.y - img.height/2);
 				}
+				
 			},
 			move: function(){
+				var killed = false;
+				if(this.hp <= 0){
+					this.frameNumber++;
+					if(this.frameNumber == 15){
+						this.frameNumber = 0;
+						this.fireImgNumber++;
+						if(this.fireImgNumber > 2){
+							killed = true;
+						}
+					}
+				}
 				this.y+=this.v;
-				if	(this.y > canvasElement.height + enemyPlaneImg.height/2){
+				if	(this.y > canvasElement.height + enemyPlaneImg.height/2 || killed){
 					this.x = Math.floor(enemyPlaneImg.width/2 + Math.random() * (canvasElement.width - enemyPlaneImg.width));
 					this.y = Math.floor(-enemyPlaneImg.height - Math.random() * (canvasElement.height - enemyPlaneImg.height));
+					this.hp = 25;
 				}
 			}
 		}
@@ -102,7 +139,7 @@
 				this.y+=this.v;
 				if	(this.y > canvasElement.height + enemyTankImg.height/2){
 					this.x = Math.floor(enemyTankImg.width/2 + Math.random() * (canvasElement.width - enemyTankImg.width));
-					this.y = Math.floor(-enemyTankImg.height - Math.random() * (canvasElement.height - enemyTankImg.height));;
+					this.y = Math.floor(-enemyTankImg.height - Math.random() * (canvasElement.height - enemyTankImg.height));
 				}
 			}
 		}
@@ -122,6 +159,8 @@
 						enemyPlane.hp -= plane.dmgOfBullet;
 						if(enemyPlane.hp <= 0){
 							score += 200;
+							enemyPlane.frameNumber = 0;
+							enemyPlane.fireImgNumber = 0;
 						}
 					}
 				}

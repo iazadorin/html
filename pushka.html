@@ -117,8 +117,10 @@
 				return;
 			}
 			plane.traceVisible = true;
-			if (plane.x > enemyPlane.x - enemyPlaneImg.width/2 &&  plane.x < enemyPlane.x + enemyPlaneImg.width/2){
-				enemyPlane.hp -= plane.dmgOfBullet;
+			if (plane.y - planeImg.height/2 > enemyPlane.y + enemyPlaneImg.height/2 && enemyPlane.y > 0){
+				if (plane.x > enemyPlane.x - enemyPlaneImg.width/2 &&  plane.x < enemyPlane.x + enemyPlaneImg.width/2){
+					enemyPlane.hp -= plane.dmgOfBullet;
+				}
 			}
 		}
 		function iteration(){

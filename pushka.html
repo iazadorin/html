@@ -56,6 +56,7 @@
 		var fireImg3 = document.getElementById('fire-large');
 		var gameOver = false;
 		var score = 0;
+		var enemies = [];
 		var plane = {
 			x: 300,
 			y: 540,
@@ -90,6 +91,11 @@
 			hp: 25,
 			fireImgNumber: 0,
 			frameNumber: 0,
+			create: function(){
+				this.x = Math.floor(enemyPlaneImg.width/2 + Math.random() * (canvasElement.width - enemyPlaneImg.width));
+				this.y = Math.floor(-enemyPlaneImg.height - Math.random() * (canvasElement.height - enemyPlaneImg.height));
+				this.hp = 25;
+			},
 			draw: function(){
 				canvasContext.drawImage(enemyPlaneImg, this.x - enemyPlaneImg.width/2, this.y - enemyPlaneImg.height/2);
 				if(this.hp <= 0){
@@ -121,9 +127,7 @@
 				}
 				this.y+=this.v;
 				if	(this.y > canvasElement.height + enemyPlaneImg.height/2 || killed){
-					this.x = Math.floor(enemyPlaneImg.width/2 + Math.random() * (canvasElement.width - enemyPlaneImg.width));
-					this.y = Math.floor(-enemyPlaneImg.height - Math.random() * (canvasElement.height - enemyPlaneImg.height));
-					this.hp = 25;
+					this.create();
 				}
 			}
 		}
@@ -143,7 +147,13 @@
 				}
 			}
 		}
-		
+		function createEnemies(){
+			enemies[0] = Object.assign({}, enemyPlane);
+			enemies[1] = Object.assign({}, enemyPlane);
+			for (var i = 0; i < enemies.length; i++){
+				enemies[i].create();
+			}
+		}
 		function mouseMove(e){
 			plane.x = e.offsetX;
 			plane.y = e.offsetY;
@@ -153,14 +163,16 @@
 				return;
 			}
 			plane.traceVisible = true;
-			if (enemyPlane.hp > 0){
-				if (plane.y - planeImg.height/2 > enemyPlane.y + enemyPlaneImg.height/2 && enemyPlane.y > 0){
-					if (plane.x > enemyPlane.x - enemyPlaneImg.width/2 &&  plane.x < enemyPlane.x + enemyPlaneImg.width/2){
-						enemyPlane.hp -= plane.dmgOfBullet;
-						if(enemyPlane.hp <= 0){
-							score += 200;
-							enemyPlane.frameNumber = 0;
-							enemyPlane.fireImgNumber = 0;
+			for (var i = 0; i < enemies.length; i++){
+				if (enemies[i].hp > 0){
+					if (plane.y - planeImg.height/2 > enemies[i].y + enemyPlaneImg.height/2 && enemies[i].y > 0){
+						if (plane.x > enemies[i].x - enemyPlaneImg.width/2 &&  plane.x < enemies[i].x + enemyPlaneImg.width/2){
+							enemies[i].hp -= plane.dmgOfBullet;
+							if(enemies[i].hp <= 0){
+								score += 200;
+								enemies[i].frameNumber = 0;
+								enemies[i].fireImgNumber = 0;
+							}
 						}
 					}
 				}
@@ -170,8 +182,10 @@
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
 			enemyTank.move();
 			enemyTank.draw();
-			enemyPlane.draw();
-			enemyPlane.move();
+			for (var i = 0; i < enemies.length; i++){
+				enemies[i].draw();
+				enemies[i].move();
+			}
 			plane.draw();
 			showScore();
 			window.requestAnimationFrame(iteration);
@@ -180,6 +194,7 @@
 			textElement.textContent = 'Твой счёт: '
 			textElement.textContent += score;
 		}
+		createEnemies();
 		canvasElement.addEventListener('mousemove', mouseMove);
 		canvasElement.addEventListener('click', mouseClick);
 		iteration();

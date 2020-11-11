@@ -17,30 +17,26 @@
 		<img id = 'plane'
 			src = "plane.png"
 		/>
-	</div>
-	<div style="display: none;">
 		<img id = 'enemyPlane'
 			src = "enemy-plane.png"
 		/>
-	</div>
-	<div style="display: none;">
 		<img id = 'enemyTank'
 			src = "enemy-tank.png"
 		/>
-	</div>
-	<div style="display: none;">
 		<img id = 'fire-small'
 			src = "fire-small.png"
 		/>
-	</div>
-	<div style="display: none;">
 		<img id = 'fire-medium'
 			src = "fire-medium.png"
 		/>
-	</div>
-	<div style="display: none;">
 		<img id = 'fire-large'
 			src = "fire-large.png"
+		/>
+		<img id = 'rocket'
+			src = "rocket.png"
+		/>
+		<img id = 'bomb'
+			src = "bomb.png"
 		/>
 	</div>
 	<pre id='p' style="font-size:25px"></pre>
@@ -54,8 +50,11 @@
 		var fireImg1 = document.getElementById('fire-small');
 		var fireImg2 = document.getElementById('fire-medium');
 		var fireImg3 = document.getElementById('fire-large');
+		var rocketImg = document.getElementById('rocket');
+		var bombImg = document.getElementById('bomb');
 		var gameOver = false;
 		var score = 0;
+		var weapon = 1;
 		var enemies = [];
 		var plane = {
 			x: 300,
@@ -172,6 +171,34 @@
 				}
 			}
 		}
+		function keyDown(event){
+			if (gameOver==true){
+				return;
+			}
+			const keyName = event.key;
+			if (keyName==="1"){
+				weapon = 1;
+			}
+			if (keyName==="2"){
+				weapon = 2;
+			}
+			if (keyName==="3"){
+				weapon = 3;
+			}
+		}
+		function drawWeapon(){
+			switch(weapon){
+			case 1:
+				
+				break;
+			case 2:
+				canvasContext.drawImage(rocketImg, 0, 0);
+				break;
+			case 3:
+				canvasContext.drawImage(bombImg, 0, 0);
+				break;
+			}
+		}
 		function iteration(){
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
 			for (var i = 0; i < enemies.length; i++){
@@ -179,6 +206,7 @@
 				enemies[i].move();
 			}
 			plane.draw();
+			drawWeapon();
 			showScore();
 			window.requestAnimationFrame(iteration);
 		}
@@ -189,6 +217,7 @@
 		createEnemies();
 		canvasElement.addEventListener('mousemove', mouseMove);
 		canvasElement.addEventListener('click', mouseClick);
+		document.addEventListener('keydown', keyDown, false);
 		iteration();
 	</script>
 </body>

@@ -38,6 +38,9 @@
 		<img id = 'bomb'
 			src = "bomb.png"
 		/>
+		<img id = 'bullet'
+			src = "bullet.png"
+		/>
 	</div>
 	<pre id='p' style="font-size:25px"></pre>
 	<script>
@@ -52,6 +55,7 @@
 		var fireImg3 = document.getElementById('fire-large');
 		var rocketImg = document.getElementById('rocket');
 		var bombImg = document.getElementById('bomb');
+		var bulletImg = document.getElementById('bullet');
 		var gameOver = false;
 		var score = 0;
 		var weapon = 1;
@@ -176,26 +180,28 @@
 				return;
 			}
 			const keyName = event.key;
-			if (keyName==="1"){
+			switch(keyName){
+			case "1":
 				weapon = 1;
-			}
-			if (keyName==="2"){
+				break;
+			case "2":
 				weapon = 2;
-			}
-			if (keyName==="3"){
+				break;
+			case "3":
 				weapon = 3;
+				break;
 			}
 		}
 		function drawWeapon(){
 			switch(weapon){
 			case 1:
-				
+				canvasContext.drawImage(bulletImg, 5, 0);
 				break;
 			case 2:
-				canvasContext.drawImage(rocketImg, 0, 0);
+				canvasContext.drawImage(rocketImg, 5, 0);
 				break;
 			case 3:
-				canvasContext.drawImage(bombImg, 0, 0);
+				canvasContext.drawImage(bombImg, 5, 0);
 				break;
 			}
 		}

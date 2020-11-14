@@ -150,7 +150,11 @@
 			move: function(){
 				if(rocket.visible){
 					this.y-=this.v;
+					if(this.y + rocketImg.height/2 < 0){
+						this.visible = false;
+					}
 				}
+				
 			}
 		}
 		function createEnemies(){
@@ -195,10 +199,12 @@
 				}
 				break;
 			case 2:
-				rocket.x = plane.x;
-				rocket.y = plane.y;
-				rocket.visible = true;
-				break;
+				if(!rocket.visible){
+					rocket.x = plane.x;
+					rocket.y = plane.y;
+					rocket.visible = true;
+					break;
+				}
 			}
 		}
 		function keyDown(event){

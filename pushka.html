@@ -63,8 +63,11 @@
 		var plane = {
 			x: 300,
 			y: 540,
+			vx: 0,
+			vy: 0,
+			v: 5,
 			dmgOfRocket: 25,
-			dmgOfBullet: 5,
+			dmgOfBullet: 1,
 			color: '#FF7E00',
 			traceVisible: false,
 			numberOfFramesTheTraceIsVisibleYet: 0,
@@ -85,10 +88,30 @@
 					this.traceVisible = false;
 					this.numberOfFramesTheTraceIsVisibleYet = 0;
 				}
+			},
+			move: function(){
+				var maxX = canvasElement.width - planeImg.width/2;
+				var minX = planeImg.width/2;
+				var maxY = canvasElement.height - planeImg.height/2;
+				var minY = canvasElement.height/2;
+				this.x += this.vx;
+				this.y += this.vy;
+				if(this.x > maxX){
+					this.x = maxX;
+				}
+				if(this.x < minX){
+					this.x = minX;
+				}
+				if(this.y > maxY){
+					this.y = maxY;
+				}
+				if(this.y < minY){
+					this.y = minY;
+				}
 			}
 		}
 		var enemy = {
-			v: 2,
+			v: 1,
 			x: 0,
 			y: 0,
 			hp: 0,
@@ -180,7 +203,7 @@
 			enemies[3] = Object.assign({}, enemy);
 			enemies[4] = Object.assign({}, enemy);
 			for (var i = 0; i < 2; i++){
-				enemies[i].v = 1;
+				enemies[i].v = 0.5;
 				enemies[i].initialHp = 50;
 				enemies[i].addedScore = 300;
 				enemies[i].image = enemyTankImg;
@@ -193,7 +216,7 @@
 			plane.x = e.offsetX;
 			plane.y = e.offsetY;
 		}
-		function mouseClick(event){
+		function fire(){
 			if (gameOver==true){
 				return;
 			}
@@ -239,6 +262,30 @@
 			case "3":
 				weapon = 3;
 				break;
+			case " ":
+				fire();
+				break;
+			case "ArrowRight":
+				plane.vx = plane.v
+				break;
+			case "ArrowLeft":
+				plane.vx = -plane.v
+				break;
+			case "ArrowUp":
+				plane.vy = -plane.v
+				break;
+			case "ArrowDown":
+				plane.vy = plane.v
+				break;
+			}
+		}
+		function keyUp(event){
+			const keyName = event.key;
+			if(keyName==="ArrowRight" || keyName==="ArrowLeft"){
+				plane.vx = 0;
+			}
+			if(keyName==="ArrowUp" || keyName==="ArrowDown"){
+				plane.vy = 0;
 			}
 		}
 		function drawWeapon(){
@@ -263,6 +310,7 @@
 			rocket.draw();
 			rocket.move();
 			plane.draw();
+			plane.move();
 			drawWeapon();
 			showScore();
 			window.requestAnimationFrame(iteration);
@@ -272,9 +320,8 @@
 			textElement.textContent += score;
 		}
 		createEnemies();
-		canvasElement.addEventListener('mousemove', mouseMove);
-		canvasElement.addEventListener('click', mouseClick);
 		document.addEventListener('keydown', keyDown, false);
+		document.addEventListener('keyup', keyUp, false);
 		iteration();
 	</script>
 </body>

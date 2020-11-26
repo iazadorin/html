@@ -196,6 +196,49 @@
 				
 			}
 		}
+		var bomb = {
+			x: 0,
+			y: 0,
+			dmg: 50,
+			v: 2,
+			dalnost: 0,
+			visible: false,
+			draw: function(){
+				if(this.visible){
+					canvasContext.drawImage(bombImg, this.x - bombImg.width/2, this.y - bombImg.height/2);
+					this.dalnost++;
+				}
+			},
+			move: function(){
+				if(this.visible){
+					this.y-=this.v;
+					for (var i = 0; i < enemies.length; i++){
+						if (enemies[i].hp > 0){
+							if(this.y - bombImg.height/2 <= enemies[i].y + enemies[i].image.height/2){
+								if(this.x + bombImg.width/2 > enemies[i].x - enemies[i].image.width/2 &&  this.x - bombImg.width/2 < enemies[i].x + enemies[i].image.width/2){
+									enemies[i].hp -= this.dmg;
+									this.visible = false;
+									if(enemies[i].hp <= 0){
+										score += enemies[i].addedScore;
+										enemies[i].frameNumber = 0;
+										enemies[i].fireImgNumber = 0;
+									}
+								}
+								else{
+									if(this.dalnost == 50){
+										this.visible = false;
+									}
+								}
+							}
+							
+						}
+					}
+				}
+					if(this.y + bombImg.height/2 < 0){
+						this.visible = false;
+					}
+				}
+			}
 		function createEnemies(){
 			enemies[0] = Object.assign({}, enemy);
 			enemies[1] = Object.assign({}, enemy);
@@ -243,8 +286,16 @@
 					rocket.x = plane.x;
 					rocket.y = plane.y;
 					rocket.visible = true;
-					break;
 				}
+				break;
+			case 3:
+				if(!bomb.visible){
+					bomb.x = plane.x;
+					bomb.y = plane.y;
+					bomb.dalnost = 0;
+					bomb.visible = true;
+				}
+				break;
 			}
 		}
 		function keyDown(event){
@@ -309,6 +360,8 @@
 			}
 			rocket.draw();
 			rocket.move();
+			bomb.draw();
+			bomb.move();
 			plane.draw();
 			plane.move();
 			drawWeapon();

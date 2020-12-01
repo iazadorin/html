@@ -214,8 +214,8 @@
 					this.y-=this.v;
 					for (var i = 0; i < enemies.length; i++){
 						if (enemies[i].hp > 0){
-							if(this.y - bombImg.height/2 <= enemies[i].y + enemies[i].image.height/2){
-								if(this.x + bombImg.width/2 > enemies[i].x - enemies[i].image.width/2 &&  this.x - bombImg.width/2 < enemies[i].x + enemies[i].image.width/2){
+							if(Math.abs(this.y - enemies[i].y) < bombImg.height/2 + enemies[i].image.height/2){
+								if(Math.abs(this.x - enemies[i].x) < bombImg.width/2 + enemies[i].image.width/2){
 									enemies[i].hp -= this.dmg;
 									this.visible = false;
 									if(enemies[i].hp <= 0){

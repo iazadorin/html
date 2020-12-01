@@ -224,21 +224,15 @@
 										enemies[i].fireImgNumber = 0;
 									}
 								}
-								else{
-									if(this.dalnost == 50){
-										this.visible = false;
-									}
-								}
 							}
-							
 						}
 					}
 				}
-					if(this.y + bombImg.height/2 < 0){
-						this.visible = false;
-					}
+				if(this.y + bombImg.height/2 < 0 || this.dalnost >= 50){
+					this.visible = false;
 				}
 			}
+		}
 		function createEnemies(){
 			enemies[0] = Object.assign({}, enemy);
 			enemies[1] = Object.assign({}, enemy);

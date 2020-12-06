@@ -187,11 +187,15 @@
 								if(this.x + rocketImg.width/2 > enemies[i].x - enemies[i].image.width/2 &&  this.x - rocketImg.width/2 < enemies[i].x + enemies[i].image.width/2){
 									enemies[i].explosionVisible = true;
 									enemies[i].hp -= this.dmg;
+									var audio = new Audio('explosion.wav');
+									audio.play();
 									this.visible = false;
 									if(enemies[i].hp <= 0){
 										score += enemies[i].addedScore;
 										enemies[i].frameNumber = 0;
 										enemies[i].fireImgNumber = 0;
+										var audio = new Audio('explosion-of-enemy.wav');
+										audio.play();
 									}
 								}
 							}
@@ -226,11 +230,15 @@
 								if(Math.abs(this.x - enemies[i].x) < bombImg.width/2 + enemies[i].image.width/2){
 									enemies[i].explosionVisible = true;
 									enemies[i].hp -= this.dmg;
+									var audio = new Audio('explosion.wav');
+									audio.play();
 									this.visible = false;
 									if(enemies[i].hp <= 0){
 										score += enemies[i].addedScore;
 										enemies[i].frameNumber = 0;
 										enemies[i].fireImgNumber = 0;
+										var audio = new Audio('explosion-of-enemy.wav');
+										audio.play();
 									}
 								}
 							}
@@ -269,16 +277,24 @@
 			switch(weapon){
 			case 1:
 				plane.traceVisible = true;
+				var audio = new Audio('laser.wav');
+				audio.volume = 0.5;
+				audio.play();
 				for (var i = 0; i < enemies.length; i++){
 					if (enemies[i].hp > 0){
 						if (plane.y - planeImg.height/2 > enemies[i].y + enemies[i].image.height/2 && enemies[i].y > 0){
 							if (plane.x > enemies[i].x - enemies[i].image.width/2 &&  plane.x < enemies[i].x + enemies[i].image.width/2){
 								enemies[i].hp -= plane.dmgOfBullet;
+								var audio = new Audio('rebound.wav');
+								audio.volume = 0.1;
+								audio.play();
 								if(enemies[i].hp <= 0){
 									enemies[i].explosionVisible = true;
 									score += enemies[i].addedScore;
 									enemies[i].frameNumber = 0;
 									enemies[i].fireImgNumber = 0;
+									var audio = new Audio('explosion-of-enemy.wav');
+									audio.play();
 								}
 							}
 						}
@@ -290,6 +306,8 @@
 					rocket.x = plane.x;
 					rocket.y = plane.y;
 					rocket.visible = true;
+					var audio = new Audio('shot2.wav');
+					audio.play();
 				}
 				break;
 			case 3:
@@ -298,6 +316,8 @@
 					bomb.y = plane.y;
 					bomb.dalnost = 0;
 					bomb.visible = true;
+					var audio = new Audio('shot3.wav');
+					audio.play();
 				}
 				break;
 			}
@@ -373,17 +393,29 @@
 			window.requestAnimationFrame(iteration);
 		}
 		function gameover(){
+			var audio = new Audio('gameOver.wav');
+			audio.play();
 			gameOver = true;
 			textElement.textContent = 'Игра окончена!'
 			textElement.textContent += '\n'
 			textElement.textContent += 'Твой окончательный счёт: '
 			textElement.textContent += score;
 		}
+		function halftime(){
+			var audio = new Audio('30 seconds.wav');
+			audio.play();
+		}
+		function radio(){
+			var audio = new Audio('voice.wav');
+			audio.play();
+		}
 		function showScore(){
 			textElement.textContent = 'Твой счёт: '
 			textElement.textContent += score;
 		}
 		createEnemies();
+		setTimeout(radio, 2000);
+		setTimeout(halftime, 30000);
 		setTimeout(gameover, 60000);
 		document.addEventListener('keydown', keyDown, false);
 		document.addEventListener('keyup', keyUp, false);

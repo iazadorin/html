@@ -116,6 +116,7 @@
 			y: 0,
 			hp: 0,
 			initialHp: 25,
+			explosionVisible: false,
 			image: enemyPlaneImg,
 			fireImgNumber: 0,
 			frameNumber: 0,
@@ -123,11 +124,12 @@
 			create: function(){
 				this.x = Math.floor(this.image.width/2 + Math.random() * (canvasElement.width - this.image.width));
 				this.y = Math.floor(-this.image.height - Math.random() * (canvasElement.height - this.image.height));
+				this.explosionVisible = false;
 				this.hp = this.initialHp;
 			},
 			draw: function(){
 				canvasContext.drawImage(this.image, this.x - this.image.width/2, this.y - this.image.height/2);
-				if(this.hp <= 0){
+				if(this.explosionVisible){
 					var img;
 					if(this.fireImgNumber==0){
 						img = fireImg1;
@@ -144,13 +146,18 @@
 			},
 			move: function(){
 				var killed = false;
-				if(this.hp <= 0){
+				if(this.explosionVisible){
 					this.frameNumber++;
 					if(this.frameNumber == 15){
 						this.frameNumber = 0;
 						this.fireImgNumber++;
+						
 						if(this.fireImgNumber > 2){
-							killed = true;
+							this.explosionVisible = false;
+							this.fireImgNumber = 0;
+							if(this.hp <= 0){
+								killed = true;
+							}
 						}
 					}
 				}
@@ -178,6 +185,7 @@
 						if (enemies[i].hp > 0){
 							if(this.y - rocketImg.height/2 <= enemies[i].y + enemies[i].image.height/2){
 								if(this.x + rocketImg.width/2 > enemies[i].x - enemies[i].image.width/2 &&  this.x - rocketImg.width/2 < enemies[i].x + enemies[i].image.width/2){
+									enemies[i].explosionVisible = true;
 									enemies[i].hp -= this.dmg;
 									this.visible = false;
 									if(enemies[i].hp <= 0){
@@ -216,6 +224,7 @@
 						if (enemies[i].hp > 0){
 							if(Math.abs(this.y - enemies[i].y) < bombImg.height/2 + enemies[i].image.height/2){
 								if(Math.abs(this.x - enemies[i].x) < bombImg.width/2 + enemies[i].image.width/2){
+									enemies[i].explosionVisible = true;
 									enemies[i].hp -= this.dmg;
 									this.visible = false;
 									if(enemies[i].hp <= 0){
@@ -266,6 +275,7 @@
 							if (plane.x > enemies[i].x - enemies[i].image.width/2 &&  plane.x < enemies[i].x + enemies[i].image.width/2){
 								enemies[i].hp -= plane.dmgOfBullet;
 								if(enemies[i].hp <= 0){
+									enemies[i].explosionVisible = true;
 									score += enemies[i].addedScore;
 									enemies[i].frameNumber = 0;
 									enemies[i].fireImgNumber = 0;

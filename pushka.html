@@ -293,9 +293,6 @@
 			}
 		}
 		function keyDown(event){
-			if (gameOver==true){
-				return;
-			}
 			const keyName = event.key;
 			switch(keyName){
 			case "1":
@@ -347,6 +344,9 @@
 			}
 		}
 		function iteration(){
+			if (gameOver){
+				return;
+			}
 			canvasContext.clearRect(0,0, canvasElement.width, canvasElement.height);
 			for (var i = 0; i < enemies.length; i++){
 				enemies[i].draw();
@@ -362,11 +362,19 @@
 			showScore();
 			window.requestAnimationFrame(iteration);
 		}
+		function gameover(){
+			gameOver = true;
+			textElement.textContent = 'Игра окончена!'
+			textElement.textContent += '\n'
+			textElement.textContent += 'Твой окончательный счёт: '
+			textElement.textContent += score;
+		}
 		function showScore(){
 			textElement.textContent = 'Твой счёт: '
 			textElement.textContent += score;
 		}
 		createEnemies();
+		setTimeout(gameover, 60000);
 		document.addEventListener('keydown', keyDown, false);
 		document.addEventListener('keyup', keyUp, false);
 		iteration();

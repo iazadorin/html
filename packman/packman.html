@@ -295,7 +295,7 @@
 			if (Math.abs(packMan.x - monster.x) < packMan.radius + monster.radius && Math.abs(packMan.y - monster.y) < packMan.radius + monster.radius){
 				if (gameOver!=true){
 					textElement.textContent += "\n"
-					textElement.textContent += "Вы проиграли!"
+					textElement.textContent += "You lost!"
 					gameOver = true;
 					packMan.vx = 0;
 					packMan.vy = 0;
@@ -354,7 +354,7 @@
 		}
 		
 		function incrementScore(){
-			textElement.textContent = "Cчёт: " + gameScore;
+			textElement.textContent = "Score: " + gameScore;
 			gameScore++;
 			if(gameScore >= 15){
 				monster.velocity = 1.25;
@@ -396,6 +396,6 @@
 		// Enter game loop
 		iteration();
 	</script>
-
+	<p style="font-size:20px">Hello! Use arrow keys to move packman. I can only advise you to watch out for a ghost and collect the points to raise the score. </p>
 </body>
 </html>

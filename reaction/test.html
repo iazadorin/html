@@ -42,11 +42,11 @@
 			}
 			if(colorChanged){
 				var endTime = Date.now();
-				textElement.textContent += "Ваш результат: " + (endTime - startTime) + " миллисекунд.";
+				textElement.textContent += "Your result: " + (endTime - startTime) + " milliseconds.";
 				gameOver = true;
 			}
 			else{
-				textElement.textContent += "Вы проиграли!"
+				textElement.textContent += "You lost!"
 				gameOver = true;
 			}
 		}
@@ -54,4 +54,5 @@
 		document.addEventListener('click', mouseClick, false);
 		circle.draw();
 	</script>
+	<p style="font-size:20px">Hello! It's a reaction game. You must click on the circle as soon as it changes color. After that, you can see your result. It should be less than 300 milliseconds.</p>
 </body>

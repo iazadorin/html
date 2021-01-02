@@ -47,23 +47,25 @@
 			if (distance < circle.radius){
 				score+=3;
 				circle.move();
-				textElement.textContent = 'Твой счёт: '
+				textElement.textContent = 'Your score: '
 				textElement.textContent += score;
 				circle.draw();
 			}
 			else{
 				score-=4;
-				textElement.textContent = 'Твой счёт: '
+				textElement.textContent = 'Your score: '
 				textElement.textContent += score;
 			}
 		}
 		function gameover(){
 			gameOver = true;
-			textElement.textContent = 'Твой окончательный счёт: '
+			textElement.textContent = 'Your final score: '
 			textElement.textContent += score;
 		}
 		circle.draw();
 		setTimeout(gameover, 60000);
 		canvasElement.addEventListener('click', mouseClick, false);
 	</script>
+	<p style="font-size:20px">Hello! This game trains accuracy, for example before playing shooters. Just click circles.</p>
 </body>
+</html>

@@ -4,3 +4,5 @@ There are four mini-games here, witch I developed, when I was learning how to us
 * [Packman](https://htmlpreview.github.io/?https://github.com/iazadorin/html/blob/main/packman/packman.html)
 * [Accuracy](https://htmlpreview.github.io/?https://github.com/iazadorin/html/blob/main/accuracy/test%202.html)
 * [Reaction](https://htmlpreview.github.io/?https://github.com/iazadorin/html/blob/main/reaction/test.html)
+
+Main page is [here](https://htmlpreview.github.io/?https://github.com/iazadorin/html/blob/main/main.html) 
